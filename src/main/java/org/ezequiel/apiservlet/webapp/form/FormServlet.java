@@ -8,9 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/registro")
 public class FormServlet extends HttpServlet {
@@ -30,27 +28,27 @@ public class FormServlet extends HttpServlet {
                 req.getParameter("habilitar").equals("on");
         String secreto = req.getParameter("secreto");
 
-        List<String> errores = new ArrayList<>();
+        Map<String,String> errores = new HashMap<>();
         if (username == null || username.isBlank()) {
-            errores.add("El username es requerido");
+            errores.put("username", "El username es requerido");
         }
         if (password == null || password.isBlank()) {
-            errores.add("El password no puede ser vacio");
+            errores.put("password","El password no puede ser vacio");
         }
         if (email == null || !email.contains("@")) {
-            errores.add("El email es requerido y debe tener un formato de correo");
+            errores.put("email","El email es requerido y debe tener un formato de correo");
         }
         if (pais == null || pais.equals("") || pais.equals(" ")) {
-            errores.add("El pais es requerido");
+            errores.put("pais","El pais es requerido");
         }
         if (lenguajes == null || lenguajes.length == 0) {
-            errores.add("Debe seleccionar al menos un tema");
+            errores.put("lenguajes","Debe seleccionar al menos un tema");
         }
         if (roles == null || roles.length == 0) {
-            errores.add("Debe seleccionar al menos un rol!");
+            errores.put("roles","Debe seleccionar al menos un rol!");
         }
         if (idioma == null) {
-            errores.add("Debe selecionar al menos un idioma!");
+            errores.put("idioma","Debe selecionar al menos un idioma!");
         }
 
         if (errores.isEmpty()) {
@@ -97,6 +95,6 @@ public class FormServlet extends HttpServlet {
              out.println("<p><a href=\"/webapp-form/index.jsp\">Regresar</a></p>");**/
             req.setAttribute("errores", errores);
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
-            }
+        }
         }
     }
